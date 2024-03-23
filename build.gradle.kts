@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.userdev)
     alias(libs.plugins.shadow)
 
-    `java-library`
+    kotlin("jvm") version "1.9.23"
 }
 
 base {
@@ -25,6 +25,8 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.bundle)
 
+    compileOnly(libs.jetbrains.kotlin)
+
     compileOnly(libs.triumph.cmds)
 
     compileOnly(libs.discord.jda)
@@ -32,14 +34,16 @@ dependencies {
     compileOnly(libs.config.me)
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks {
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "17"
+            javaParameters = true
+        }
     }
 
     javadoc {

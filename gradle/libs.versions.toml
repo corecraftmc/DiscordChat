@@ -25,6 +25,8 @@ decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholog
 triumph-cmds = { group = "dev.triumphteam", name = "triumph-cmd-bukkit", version = "2.0.0-ALPHA-9" }
 triumph-gui = { group = "dev.triumphteam", name = "triumph-gui", version = "3.1.7" }
 
+jetbrains-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = "1.9.23" }
+
 discord-jda = { group = "net.dv8tion", name = "JDA", version = "5.0.0-beta.21" }
 
 metrics = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }

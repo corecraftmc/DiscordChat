@@ -16,6 +16,8 @@ public class LibraryLoader implements PluginLoader {
 
         resolver.addDependency(new Dependency(new DefaultArtifact("dev.triumphteam:triumph-cmd-bukkit:2.0.0-ALPHA-9"), null));
 
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib:1.9.23"), null));
+
         resolver.addDependency(new Dependency(new DefaultArtifact("net.dv8tion:JDA:5.0.0-beta.21"), null));
 
         resolver.addDependency(new Dependency(new DefaultArtifact("ch.jalu:configme:1.4.1"), null));
