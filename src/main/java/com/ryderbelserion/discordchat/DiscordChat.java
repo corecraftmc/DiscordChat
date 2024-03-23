@@ -71,20 +71,6 @@ public class DiscordChat extends JavaPlugin {
         }
     }
 
-    private void sendMessage(String message) {
-        if (!message.isEmpty() || !message.isBlank()) {
-            Guild guild = this.jda.getGuildById("1142362341095251998");
-
-            if (guild != null) {
-                TextChannel channel = guild.getTextChannelById("1142362341703438359");
-
-                if (channel != null) {
-                    channel.sendMessage(message).queue();
-                }
-            }
-        }
-    }
-
     public @NotNull SettingsManager getOptions() {
         return this.config;
     }
