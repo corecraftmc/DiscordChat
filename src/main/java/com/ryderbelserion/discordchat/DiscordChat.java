@@ -99,7 +99,15 @@ public class DiscordChat extends JavaPlugin {
                 .build();
     }
 
-    public @NotNull JDA getJda() {
-        return this.jda;
+    public Guild guild() {
+        Guild guild = this.jda.getGuildById(this.config.getProperty(Config.guild_id));
+
+        if (guild == null) {
+            getLogger().warning("Guild is null.");
+
+            return null;
+        }
+
+        return guild;
     }
 }
