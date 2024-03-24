@@ -1,0 +1,23 @@
+package com.ryderbelserion.discordchat.discord.api
+
+import org.jetbrains.annotations.ApiStatus
+
+object ModuleProvider {
+
+    private var plugin: ModulePlugin? = null
+
+    fun get(): ModulePlugin {
+        return this.plugin ?: throw RuntimeException("Failed to utilize plugin. Did it get enabled?")
+    }
+
+    @ApiStatus.Internal
+    fun start(plugin: ModulePlugin) {
+        ModuleProvider.plugin = plugin;
+    }
+
+    @JvmStatic
+    @ApiStatus.Internal
+    fun stop() {
+        this.plugin = null
+    }
+}

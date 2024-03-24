@@ -25,6 +25,8 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.bundle)
 
+    compileOnly(libs.jetbrains.coroutines)
+
     compileOnly(libs.jetbrains.kotlin)
 
     compileOnly(libs.triumph.cmds)
