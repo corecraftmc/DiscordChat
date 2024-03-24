@@ -132,24 +132,11 @@ public class DiscordBot extends AbstractPlugin {
         Embed embed = new Embed();
 
         embed.author(title, AvatarUtils.avatar(player));
-        embed.description(description);
-        embed.color(color);
 
-        MessageEmbed messageEmbed = embed.build();
-
-        for (String id : channels()) {
-            TextChannel channel = this.guild.getTextChannelById(id);
-
-            if (channel == null) continue;
-
-            channel.sendMessageEmbeds(messageEmbed).queue();
+        if (description != null) {
+            embed.description(description);
         }
-    }
 
-    public void sendDiscordMessage(Player player, String title, String color) {
-        Embed embed = new Embed();
-
-        embed.author(title, AvatarUtils.avatar(player));
         embed.color(color);
 
         MessageEmbed messageEmbed = embed.build();
