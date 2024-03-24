@@ -1,10 +1,8 @@
 package com.ryderbelserion.discordchat.listeners;
 
-import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.discordchat.DiscordChat;
-import com.ryderbelserion.discordchat.platform.ConfigManager;
 import com.ryderbelserion.discordchat.platform.discord.DiscordBot;
-import com.ryderbelserion.discordchat.platform.impl.Locale;
+import com.ryderbelserion.discordchat.platform.impl.enums.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,29 +15,29 @@ public class PlayerTrafficEvent implements Listener {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private final @NotNull ConfigManager configManager = this.plugin.getConfigManager();
-
-    private final @NotNull SettingsManager locale = this.configManager.getLocale();
-
     private final @NotNull DiscordBot bot = this.plugin.getDiscordBot();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        String title = this.locale.getProperty(Locale.player_join_title);
-        String color = this.locale.getProperty(Locale.player_join_color);
-
-        this.bot.sendDiscordMessage(player, title.replaceAll("\\{username}", player.getName()), color);
+        this.bot.sendDiscordMessage(
+                player,
+                Messages.player_join_title.getMessage(player, "{username}", player.getName()),
+                null,
+                Messages.player_join_color.getMessage()
+        );
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        String title = this.locale.getProperty(Locale.player_quit_title);
-        String color = this.locale.getProperty(Locale.player_quit_color);
-
-        this.bot.sendDiscordMessage(player, title.replaceAll("\\{username}", player.getName()), color);
+        this.bot.sendDiscordMessage(
+                player,
+                Messages.player_quit_title.getMessage(player, "{username}", player.getName()),
+                null,
+                Messages.player_quit_color.getMessage()
+        );
     }
 }

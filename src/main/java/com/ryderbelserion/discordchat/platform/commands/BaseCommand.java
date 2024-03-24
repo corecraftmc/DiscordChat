@@ -3,12 +3,8 @@ package com.ryderbelserion.discordchat.platform.commands;
 import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.discordchat.DiscordChat;
 import com.ryderbelserion.discordchat.platform.ConfigManager;
-import com.ryderbelserion.discordchat.platform.impl.Config;
-import com.ryderbelserion.discordchat.platform.impl.Locale;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +17,5 @@ public abstract class BaseCommand {
     protected final @NotNull ConfigManager configManager = this.plugin.getConfigManager();
 
     protected final @NotNull SettingsManager config = this.configManager.getConfig();
-
-    protected final @NotNull SettingsManager locale = this.configManager.getLocale();
 
 }
