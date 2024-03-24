@@ -1,25 +1,14 @@
-package com.ryderbelserion.discordchat.platform;
+package com.ryderbelserion.discordchat.platform.commands.types;
 
-import ch.jalu.configme.SettingsManager;
-import com.ryderbelserion.discordchat.DiscordChat;
+import com.ryderbelserion.discordchat.platform.commands.BaseCommand;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-@Command("discordchat")
-@Permission(value = "discordchat.access")
-public class BaseCommand {
-
-    private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
-
-    private final @NotNull SettingsManager config = this.plugin.getOptions();
-
-    private final @NotNull SettingsManager locale = this.plugin.getLocale();
+public class ReloadCommand extends BaseCommand {
 
     @Command
     @Permission(value = "discordchat.help", def = PermissionDefault.TRUE)
@@ -31,10 +20,10 @@ public class BaseCommand {
     @Permission(value = "discordchat.reload", def = PermissionDefault.OP)
     public void reload(CommandSender sender) {
         // Reload the config files.
-        this.config.reload();
-        this.locale.reload();
+        this.plugin.getConfigManager().reload();
 
-        this.plugin.enableBot();
+        // Start the bot.
+        this.plugin.getDiscordBot().start();
 
         // Send the reload message.
         sender.sendRichMessage(this.locale.getProperty(Locale.reload_plugin).replaceAll("\\{prefix}", this.config.getProperty(Config.command_prefix)));
