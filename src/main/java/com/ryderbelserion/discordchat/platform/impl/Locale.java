@@ -27,8 +27,12 @@ public class Locale implements SettingsHolder {
     @Comment("The color of the player join embed.")
     public static final Property<String> player_join_color = newProperty("player.embeds.join.color", "#0eeb6a");
 
+    public static final Property<String> player_join_title = newProperty("player.embeds.join.format.title", "{username} has joined the server.");
+
     @Comment("The color of the player quit embed.")
     public static final Property<String> player_quit_color = newProperty("player.embeds.quit.color", "#e0240b");
+
+    public static final Property<String> player_quit_title = newProperty("player.embeds.quit.format.title", "{username} has left the server.");
 
     @Comment("The title format of the embed.")
     public static final Property<String> player_msg_title = newProperty("player.embeds.msg.format.title", "{username}");

@@ -1,6 +1,7 @@
 package com.ryderbelserion.discordchat.platform.discord;
 
 import com.ryderbelserion.discordchat.listeners.PlayerChatEvent;
+import com.ryderbelserion.discordchat.listeners.PlayerTrafficEvent;
 import com.ryderbelserion.discordchat.platform.discord.api.AbstractPlugin;
 import com.ryderbelserion.discordchat.platform.discord.api.embeds.Embed;
 import com.ryderbelserion.discordchat.platform.discord.api.listeners.ModuleListener;
@@ -55,6 +56,8 @@ public class DiscordBot extends AbstractPlugin {
         this.jda = JDABuilder.createDefault(token).enableIntents(this.intents).enableCache(this.flags).addEventListeners(new ModuleListener(this)).build();
 
         register(new DiscordChatListener());
+
+        register(new PlayerTrafficEvent());
         register(new PlayerChatEvent());
     }
 
@@ -130,6 +133,23 @@ public class DiscordBot extends AbstractPlugin {
 
         embed.author(title, AvatarUtils.avatar(player));
         embed.description(description);
+        embed.color(color);
+
+        MessageEmbed messageEmbed = embed.build();
+
+        for (String id : channels()) {
+            TextChannel channel = this.guild.getTextChannelById(id);
+
+            if (channel == null) continue;
+
+            channel.sendMessageEmbeds(messageEmbed).queue();
+        }
+    }
+
+    public void sendDiscordMessage(Player player, String title, String color) {
+        Embed embed = new Embed();
+
+        embed.author(title, AvatarUtils.avatar(player));
         embed.color(color);
 
         MessageEmbed messageEmbed = embed.build();
