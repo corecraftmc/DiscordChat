@@ -2,18 +2,22 @@ package com.ryderbelserion.discordchat.platform.discord;
 
 import com.ryderbelserion.discordchat.listeners.PlayerChatEvent;
 import com.ryderbelserion.discordchat.platform.discord.api.AbstractPlugin;
+import com.ryderbelserion.discordchat.platform.discord.api.embeds.Embed;
 import com.ryderbelserion.discordchat.platform.discord.api.listeners.ModuleListener;
 import com.ryderbelserion.discordchat.platform.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
+import com.ryderbelserion.discordchat.platform.utils.AvatarUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import java.util.List;
 
@@ -118,6 +122,24 @@ public class DiscordBot extends AbstractPlugin {
             if (channel == null) continue;
 
             channel.sendMessage(message).queue();
+        }
+    }
+
+    public void sendDiscordMessage(Player player, String title, String description, String color) {
+        Embed embed = new Embed();
+
+        embed.author(title, AvatarUtils.avatar(player));
+        embed.description(description);
+        embed.color(color);
+
+        MessageEmbed messageEmbed = embed.build();
+
+        for (String id : channels()) {
+            TextChannel channel = this.guild.getTextChannelById(id);
+
+            if (channel == null) continue;
+
+            channel.sendMessageEmbeds(messageEmbed).queue();
         }
     }
 
