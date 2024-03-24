@@ -30,6 +30,8 @@ discord-jda = { group = "net.dv8tion", name = "JDA", version = "5.0.0-beta.21" }
 metrics = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 config-me = { group = "ch.jalu", name = "configme", version = "1.4.1" }
 
+placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
+
 [bundles]
 adventure = ["minimessage-api", "adventure-api"]
 holograms = ["fancy-holograms", "decent-holograms"]

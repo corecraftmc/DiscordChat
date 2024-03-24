@@ -13,6 +13,8 @@ base {
 val mcVersion = providers.gradleProperty("mcVersion").get()
 
 repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
     maven("https://repo.papermc.io/repository/maven-public/")
 
     maven("https://repo.triumphteam.dev/snapshots/")
@@ -24,6 +26,8 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.bundle)
+
+    compileOnly(libs.placeholder.api)
 
     compileOnly(libs.triumph.cmds)
 
