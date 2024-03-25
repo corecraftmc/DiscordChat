@@ -18,4 +18,6 @@ public abstract class BaseCommand {
 
     protected final @NotNull SettingsManager config = this.configManager.getConfig();
 
+    protected final @NotNull SettingsManager locale = this.configManager.getLocale();
+
 }
