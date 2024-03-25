@@ -6,15 +6,18 @@ import com.ryderbelserion.discordchat.platform.ConfigManager;
 import com.ryderbelserion.discordchat.platform.discord.DiscordBot;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
 import com.ryderbelserion.discordchat.platform.impl.enums.Messages;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PlayerTrafficEvent implements Listener {
+public class PlayerDamageEvent implements Listener {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
@@ -25,26 +28,24 @@ public class PlayerTrafficEvent implements Listener {
     private final @NotNull DiscordBot bot = this.plugin.getDiscordBot();
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+
+        Component death = event.deathMessage();
+
+        Map<String, String> placeholders = new HashMap<>() {{
+            put("{username}", player.getName());
+
+            if (death != null) {
+                put("{cause}", PlainTextComponentSerializer.plainText().serialize(death));
+            }
+        }};
 
         this.bot.sendDiscordMessage(
                 player,
-                Messages.player_join_title.getMessage(player, "{username}", player.getName()),
+                Messages.player_death_title.getMessage(player, placeholders),
                 null,
-                this.locale.getProperty(Locale.player_join_color)
-        );
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-
-        this.bot.sendDiscordMessage(
-                player,
-                Messages.player_quit_title.getMessage(player, "{username}", player.getName()),
-                null,
-                this.locale.getProperty(Locale.player_quit_color)
+                this.locale.getProperty(Locale.player_death_color)
         );
     }
 }
