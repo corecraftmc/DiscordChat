@@ -1,6 +1,7 @@
 package com.ryderbelserion.discordchat.platform.discord;
 
 import com.ryderbelserion.discordchat.listeners.PlayerChatEvent;
+import com.ryderbelserion.discordchat.listeners.PlayerDamageEvent;
 import com.ryderbelserion.discordchat.listeners.PlayerTrafficEvent;
 import com.ryderbelserion.discordchat.platform.discord.api.AbstractPlugin;
 import com.ryderbelserion.discordchat.platform.discord.api.embeds.Embed;
@@ -8,6 +9,7 @@ import com.ryderbelserion.discordchat.platform.discord.api.listeners.ModuleListe
 import com.ryderbelserion.discordchat.platform.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
+import com.ryderbelserion.discordchat.platform.impl.enums.Messages;
 import com.ryderbelserion.discordchat.platform.utils.AvatarUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -58,6 +60,7 @@ public class DiscordBot extends AbstractPlugin {
         register(new DiscordChatListener());
 
         register(new PlayerTrafficEvent());
+        register(new PlayerDamageEvent());
         register(new PlayerChatEvent());
     }
 
@@ -71,7 +74,10 @@ public class DiscordBot extends AbstractPlugin {
             return;
         }
 
-        sendDiscordMessage(this.locale.getProperty(Locale.server_shutdown));
+        sendDiscordMessage(
+                Messages.server_shutdown.getDiscordMessage(),
+                this.locale.getProperty(Locale.server_shutdown_color)
+        );
 
         this.jda.shutdown();
     }
@@ -88,7 +94,10 @@ public class DiscordBot extends AbstractPlugin {
             this.config.reload();
         }
 
-        sendDiscordMessage(this.locale.getProperty(Locale.server_started));
+        sendDiscordMessage(
+                Messages.server_started.getDiscordMessage(),
+                this.locale.getProperty(Locale.server_started_color)
+        );
     }
 
     @Override
@@ -137,6 +146,18 @@ public class DiscordBot extends AbstractPlugin {
             embed.description(description);
         }
 
+        color(color, embed);
+    }
+
+    public void sendDiscordMessage(String description, String color) {
+        Embed embed = new Embed();
+
+        embed.description(description);
+
+        color(color, embed);
+    }
+
+    private void color(String color, Embed embed) {
         embed.color(color);
 
         MessageEmbed messageEmbed = embed.build();
@@ -153,6 +174,6 @@ public class DiscordBot extends AbstractPlugin {
     public void sendMinecraftMessage(String message) {
         if (message.isEmpty() || message.isBlank()) return;
 
-        this.plugin.getServer().broadcast(MiniMessage.miniMessage().deserialize(message));
+        this.plugin.getServer().broadcast(MiniMessage.miniMessage().deserialize(message), "discordchat.chat");
     }
 }
