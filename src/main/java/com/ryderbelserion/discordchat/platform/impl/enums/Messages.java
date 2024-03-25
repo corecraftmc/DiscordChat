@@ -21,9 +21,9 @@ public enum Messages {
     reloaded_plugin(Locale.reloaded_plugin),
     server_started(Locale.server_started),
     server_shutdown(Locale.server_shutdown),
-    player_join_color(Locale.player_join_color),
+    discord_chat_format(Locale.discord_chat_format),
+    player_death_title(Locale.player_death_title),
     player_join_title(Locale.player_join_title),
-    player_quit_color(Locale.player_quit_color),
     player_quit_title(Locale.player_quit_title),
     player_chat_format(Locale.player_chat_format),
     player_help(Locale.player_help, true);
@@ -50,8 +50,6 @@ public enum Messages {
 
     private final @NotNull SettingsManager messages = this.configManager.getLocale();
 
-    private String message;
-
     public @NotNull String getString() {
         return this.messages.getProperty(this.property);
     }
@@ -62,6 +60,22 @@ public enum Messages {
 
     public boolean isList() {
         return this.isList;
+    }
+
+    public String getDiscordMessage() {
+        return getDiscordMessage(new HashMap<>());
+    }
+
+    public String getDiscordMessage(String placeholder, String replacement) {
+        Map<String, String> placeholders = new HashMap<>() {{
+            put(placeholder, replacement);
+        }};
+
+        return getDiscordMessage(placeholders);
+    }
+
+    public String getDiscordMessage(Map<String, String> placeholders) {
+        return parse(placeholders);
     }
 
     public String getMessage() {
@@ -80,6 +94,10 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
+    public String getMessage(String placeholder, String replacement) {
+        return getMessage(null, placeholder, replacement);
+    }
+
     public String getMessage(CommandSender sender, String placeholder, String replacement) {
         Map<String, String> placeholders = new HashMap<>() {{
             put(placeholder, replacement);
@@ -92,13 +110,19 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
-    public String getMessage(String placeholder, String replacement) {
-        return getMessage(null, placeholder, replacement);
-    }
-
     public String getMessage(Player player, Map<String, String> placeholders) {
         String prefix = this.config.getProperty(Config.command_prefix);
 
+        String message = parse(placeholders);
+
+        if (Support.placeholderapi.isPluginEnabled() && player != null) {
+            return PlaceholderAPI.setPlaceholders(player, message.replaceAll("\\{prefix}", prefix));
+        }
+
+        return message.replaceAll("\\{prefix}", prefix);
+    }
+
+    private String parse(Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
@@ -113,12 +137,6 @@ public enum Messages {
             }
         }
 
-        if (Support.placeholderapi.isPluginEnabled() && player != null) {
-            return PlaceholderAPI.setPlaceholders(player, message.replaceAll("\\{prefix}", prefix));
-        }
-
-        this.message = message.replaceAll("\\{prefix}", prefix);
-
-        return message.replaceAll("\\{prefix}", prefix);
+        return message;
     }
 }
