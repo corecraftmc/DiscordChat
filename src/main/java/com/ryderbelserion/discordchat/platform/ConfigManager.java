@@ -13,39 +13,38 @@ import java.io.File;
 
 public class ConfigManager {
 
-    private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
+    private static final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private SettingsManager config;
-    private SettingsManager locale;
+    private static SettingsManager config;
+    private static SettingsManager locale;
 
-    public void load() {
-        // Create config files
+    public static void load() {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
-        this.config = SettingsManagerBuilder
-                .withYamlFile(new File(this.plugin.getDataFolder(), "config.yml"), builder)
+        config = SettingsManagerBuilder
+                .withYamlFile(new File(plugin.getDataFolder(), "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(Config.class)
                 .create();
 
-        this.locale = SettingsManagerBuilder
-                .withYamlFile(new File(this.plugin.getDataFolder(), "messages.yml"), builder)
+        locale = SettingsManagerBuilder
+                .withYamlFile(new File(plugin.getDataFolder(), "messages.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(Locale.class)
                 .create();
     }
 
-    public void reload() {
-        this.config.reload();
+    public static void reload() {
+        config.reload();
 
-        this.locale.reload();
+        locale.reload();
     }
 
-    public SettingsManager getConfig() {
-        return this.config;
+    public static SettingsManager getConfig() {
+        return config;
     }
 
-    public SettingsManager getLocale() {
-        return this.locale;
+    public static SettingsManager getLocale() {
+        return locale;
     }
 }

@@ -1,5 +1,6 @@
 package com.ryderbelserion.discordchat.platform.commands.types;
 
+import com.ryderbelserion.discordchat.platform.ConfigManager;
 import com.ryderbelserion.discordchat.platform.commands.BaseCommand;
 import com.ryderbelserion.discordchat.platform.impl.enums.Messages;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -18,9 +19,9 @@ public class ReloadCommand extends BaseCommand {
     @Command("reload")
     @Permission(value = "discordchat.reload", def = PermissionDefault.OP)
     public void reload(CommandSender sender) {
-        this.plugin.getConfigManager().reload();
+        ConfigManager.reload();
 
-        this.plugin.getDiscordBot().start();
+        this.plugin.getBot().start();
 
         sender.sendRichMessage(Messages.reloaded_plugin.getMessage(sender));
     }

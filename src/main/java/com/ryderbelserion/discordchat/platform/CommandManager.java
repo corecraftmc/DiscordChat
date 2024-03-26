@@ -10,17 +10,17 @@ import java.util.List;
 
 public class CommandManager {
 
-    private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
+    private static final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private final @NotNull BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this.plugin);
+    private static final @NotNull BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
 
-    public void load() {
+    public static void load() {
         List.of(
                 new ReloadCommand()
-        ).forEach(this.commandManager::registerCommand);
+        ).forEach(commandManager::registerCommand);
     }
 
-    public @NotNull BukkitCommandManager<CommandSender> getCommandManager() {
-        return this.commandManager;
+    public static @NotNull BukkitCommandManager<CommandSender> getCommandManager() {
+        return commandManager;
     }
 }

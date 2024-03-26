@@ -2,7 +2,6 @@ package com.ryderbelserion.discordchat.platform.impl.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.ryderbelserion.discordchat.DiscordChat;
 import com.ryderbelserion.discordchat.platform.ConfigManager;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
@@ -10,7 +9,6 @@ import com.ryderbelserion.discordchat.platform.utils.StringUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
@@ -42,13 +40,9 @@ public enum Messages {
         this.isList = isList;
     }
 
-    private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
+    private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-    private final @NotNull ConfigManager configManager = this.plugin.getConfigManager();
-
-    private final @NotNull SettingsManager config = this.configManager.getConfig();
-
-    private final @NotNull SettingsManager messages = this.configManager.getLocale();
+    private final @NotNull SettingsManager messages = ConfigManager.getLocale();
 
     public @NotNull String getString() {
         return this.messages.getProperty(this.property);

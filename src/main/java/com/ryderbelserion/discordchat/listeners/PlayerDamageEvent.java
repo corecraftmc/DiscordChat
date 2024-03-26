@@ -21,11 +21,9 @@ public class PlayerDamageEvent implements Listener {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private final @NotNull ConfigManager configManager = this.plugin.getConfigManager();
+    private final @NotNull SettingsManager locale = ConfigManager.getLocale();
 
-    private final @NotNull SettingsManager locale = this.configManager.getLocale();
-
-    private final @NotNull DiscordBot bot = this.plugin.getDiscordBot();
+    private final @NotNull DiscordBot bot = this.plugin.getBot();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {

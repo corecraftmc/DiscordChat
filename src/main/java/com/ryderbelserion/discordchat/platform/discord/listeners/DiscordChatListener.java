@@ -21,7 +21,7 @@ public class DiscordChatListener extends ListenerAdapter {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private final @NotNull DiscordBot bot = this.plugin.getDiscordBot();
+    private final @NotNull DiscordBot bot = this.plugin.getBot();
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {

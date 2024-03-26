@@ -14,11 +14,9 @@ public abstract class AbstractPlugin {
 
     protected final DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    protected final ConfigManager configManager = this.plugin.getConfigManager();
+    protected final SettingsManager config = ConfigManager.getConfig();
 
-    protected final SettingsManager config = this.configManager.getConfig();
-
-    protected final SettingsManager locale = this.configManager.getLocale();
+    protected final SettingsManager locale = ConfigManager.getLocale();
 
     public abstract void start();
 

@@ -14,10 +14,8 @@ public abstract class BaseCommand {
 
     protected final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    protected final @NotNull ConfigManager configManager = this.plugin.getConfigManager();
+    protected final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-    protected final @NotNull SettingsManager config = this.configManager.getConfig();
-
-    protected final @NotNull SettingsManager locale = this.configManager.getLocale();
+    protected final @NotNull SettingsManager locale = ConfigManager.getLocale();
 
 }
