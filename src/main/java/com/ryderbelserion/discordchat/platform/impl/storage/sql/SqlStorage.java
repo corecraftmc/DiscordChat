@@ -25,6 +25,8 @@ public class SqlStorage implements StorageImplementation {
 
     private static final String player_insert = "INSERT INTO '{prefix}users' (uuid, id) VALUES(?, ?)";
 
+    private static final String player_select = "SELECT uuid FROM '{prefix}users' WHERE uuid=? LIMIT 1";
+
     private final ConnectionFactory factory;
     private final Function<String, String> processor;
 
