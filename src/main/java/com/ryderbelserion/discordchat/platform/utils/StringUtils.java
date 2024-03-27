@@ -7,8 +7,15 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StringUtils {
+
+    public static String generate() {
+        int code = ThreadLocalRandom.current().nextInt(10000);
+
+        return String.valueOf(code);
+    }
 
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
