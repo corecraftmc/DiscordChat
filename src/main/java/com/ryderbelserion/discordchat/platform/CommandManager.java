@@ -1,6 +1,7 @@
 package com.ryderbelserion.discordchat.platform;
 
 import com.ryderbelserion.discordchat.DiscordChat;
+import com.ryderbelserion.discordchat.platform.commands.types.LinkCommand;
 import com.ryderbelserion.discordchat.platform.commands.types.ReloadCommand;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
@@ -16,7 +17,8 @@ public class CommandManager {
 
     public static void load() {
         List.of(
-                new ReloadCommand()
+                new ReloadCommand(),
+                new LinkCommand()
         ).forEach(commandManager::registerCommand);
     }
 

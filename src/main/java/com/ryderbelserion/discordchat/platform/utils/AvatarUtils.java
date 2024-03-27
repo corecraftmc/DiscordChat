@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 public class AvatarUtils {
 
     public static String avatar(Player player) {
-        String defaultUrl = "https://cravatar.eu/helm/{uuid}/{size}.png";
+        String defaultUrl = "https://cravatar.eu/helmavatar/{uuid}/{size}.png";
 
         return defaultUrl
                 .replace("{uuid}", player.getUniqueId().toString().replace("-", ""))

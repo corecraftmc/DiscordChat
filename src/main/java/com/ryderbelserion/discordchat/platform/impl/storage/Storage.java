@@ -4,6 +4,9 @@ import com.ryderbelserion.discordchat.DiscordChat;
 import com.ryderbelserion.discordchat.platform.impl.storage.interfaces.StorageImplementation;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.sql.SQLException;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class Storage {
@@ -38,5 +41,14 @@ public class Storage {
 
     public String getName() {
         return getImplementation().getName();
+    }
+
+    public void createUser(UUID uuid) {
+        try {
+            this.implementation.createUser(uuid);
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

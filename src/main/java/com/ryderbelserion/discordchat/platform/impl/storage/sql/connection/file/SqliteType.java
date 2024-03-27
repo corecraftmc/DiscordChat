@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.function.Function;
 
 public class SqliteType extends FlatFileFactory {
 
@@ -16,7 +17,7 @@ public class SqliteType extends FlatFileFactory {
     @Override
     protected Connection createConnection(File file) throws SQLException {
         try {
-            Class.forName("org.sqlite.jdbc4.JDBC4Connection").getDeclaredConstructor().newInstance();
+            Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
 
             return DriverManager.getConnection("jdbc:sqlite:" + getFile());
         } catch (ReflectiveOperationException exception) {
@@ -40,5 +41,10 @@ public class SqliteType extends FlatFileFactory {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public Function<String, String> getProcessor() {
+        return s -> s.replace('\'', '`');
     }
 }

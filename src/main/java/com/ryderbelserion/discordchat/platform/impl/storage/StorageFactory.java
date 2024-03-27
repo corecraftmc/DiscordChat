@@ -16,6 +16,7 @@ public class StorageFactory {
 
     public StorageFactory() {
         this.storage = new Storage(create(StorageType.sqlite));
+        this.storage.init();
     }
 
     public Storage getInstance() {
@@ -25,7 +26,7 @@ public class StorageFactory {
     private StorageImplementation create(StorageType type) {
         switch (type) {
             case sqlite -> {
-                return new SqlStorage(new SqliteType(new File(this.plugin.getDataFolder(), "users.db")));
+                return new SqlStorage(new SqliteType(new File(this.plugin.getDataFolder(), "data.db")));
             }
 
             case mariadb -> {

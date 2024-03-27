@@ -1,14 +1,37 @@
 package com.ryderbelserion.discordchat.platform.impl.storage.sql;
 
+import com.ryderbelserion.discordchat.DiscordChat;
 import com.ryderbelserion.discordchat.platform.impl.storage.interfaces.StorageImplementation;
 import com.ryderbelserion.discordchat.platform.impl.storage.sql.connection.ConnectionFactory;
+import com.ryderbelserion.discordchat.platform.utils.StringUtils;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.BatchUpdateException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.function.Function;
 
 public class SqlStorage implements StorageImplementation {
 
+    private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
+
+    private static final String player_insert = "INSERT INTO '{prefix}users' (uuid) VALUES(?)";
+
     private final ConnectionFactory factory;
+    private final Function<String, String> processor;
 
     public SqlStorage(ConnectionFactory factory) {
         this.factory = factory;
+
+        this.processor = this.factory.getProcessor().compose(value -> value.replace("{prefix}", "discord_"));
     }
 
     @Override
@@ -17,12 +40,76 @@ public class SqlStorage implements StorageImplementation {
     }
 
     @Override
-    public void init() {
+    public void init() throws SQLException, IOException {
         this.factory.init();
+
+        boolean tableExists;
+
+        try (Connection connection = this.factory.getConnection()) {
+            tableExists = tableExists(connection, this.processor.apply("{prefix}users"));
+        }
+
+        if (!tableExists) {
+            schema();
+        }
+    }
+
+    private void schema() throws IOException, SQLException {
+        List<String> statements;
+
+        String file = "schema/" + getName().toLowerCase(Locale.ROOT) + ".sql";
+
+        try (InputStream inputStream = this.plugin.getResource(file)) {
+            if (inputStream == null) {
+                return;
+            }
+
+            statements = StringUtils.getStatements(inputStream).stream().map(this.processor).toList();
+        }
+
+        try (Connection connection = this.factory.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                for (String query : statements) {
+                    statement.addBatch(query);
+                }
+
+                try {
+                    statement.executeBatch();
+                } catch (BatchUpdateException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
     public void stop() throws Exception {
         this.factory.stop();
+    }
+
+    @Override
+    public void createUser(UUID uuid) throws SQLException {
+        try (Connection connection = this.factory.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_insert))) {
+                statement.setString(1, uuid.toString());
+                statement.execute();
+            }
+        }
+    }
+
+    private boolean tableExists(Connection connection, String table) throws SQLException {
+        try (ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
+            while (resultSet.next()) {
+                if (resultSet.getString(3).equalsIgnoreCase(table)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void getPlayer(Connection connection) {
+
     }
 }

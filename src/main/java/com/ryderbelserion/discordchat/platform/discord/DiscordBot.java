@@ -74,10 +74,10 @@ public class DiscordBot extends AbstractPlugin {
             return;
         }
 
-        sendDiscordMessage(
-                Messages.server_shutdown.getDiscordMessage(),
-                this.locale.getProperty(Locale.server_shutdown_color)
-        );
+        //sendDiscordMessage(
+        //        Messages.server_shutdown.getDiscordMessage(),
+        //        this.locale.getProperty(Locale.server_shutdown_color)
+        //);
 
         this.jda.shutdown();
     }
@@ -94,10 +94,10 @@ public class DiscordBot extends AbstractPlugin {
             this.config.reload();
         }
 
-        sendDiscordMessage(
-                Messages.server_started.getDiscordMessage(),
-                this.locale.getProperty(Locale.server_started_color)
-        );
+        //sendDiscordMessage(
+        //        Messages.server_started.getDiscordMessage(),
+        //        this.locale.getProperty(Locale.server_started_color)
+        //);
     }
 
     @Override
