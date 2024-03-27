@@ -29,16 +29,12 @@ public class CommandHandler implements CommandFlow {
 
     @Override
     public void addCommand(CommandEngine engine, OptionType type, String name, String description) {
-        this.jda.updateCommands().addCommands(
-                Commands.slash(engine.getName(), engine.getDescription()).addOption(type, name, description)
-        ).queue();
+        this.jda.upsertCommand(engine.getName(), engine.getDescription()).addOption(type, name, description).queue();
     }
 
     @Override
     public void addCommand(CommandEngine engine, OptionData optionData) {
-        this.jda.updateCommands().addCommands(
-                Commands.slash(engine.getName(), engine.getDescription()).addOptions(optionData)
-        ).queue();
+        this.jda.upsertCommand(engine.getName(), engine.getDescription()).addOptions(optionData).queue();
     }
 
     @Override
@@ -48,16 +44,12 @@ public class CommandHandler implements CommandFlow {
 
     @Override
     public void addGuildCommand(CommandEngine engine, OptionType type, String name, String description) {
-        this.guild.updateCommands().addCommands(
-                Commands.slash(engine.getName(), engine.getDescription()).addOption(type, name, description)
-        ).queue();
+        this.guild.upsertCommand(engine.getName(), engine.getDescription()).addOption(type, name, description).queue();
     }
 
     @Override
     public void addGuildCommand(CommandEngine engine, OptionData optionData) {
-        this.guild.updateCommands().addCommands(
-                Commands.slash(engine.getName(), engine.getDescription()).addOptions(optionData)
-        ).queue();
+        this.guild.upsertCommand(engine.getName(), engine.getDescription()).addOptions(optionData).queue();
     }
 
     @Override

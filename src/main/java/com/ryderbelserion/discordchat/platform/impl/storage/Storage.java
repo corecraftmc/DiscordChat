@@ -53,6 +53,32 @@ public class Storage {
         }
     }
 
+    public String getId(String id) {
+        try {
+            return this.implementation.getIdentifier(id);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public void removeUser(UUID uuid) {
+        try {
+            this.implementation.removeUser(uuid);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void removeUser(String id) {
+        try {
+            this.implementation.removeUser(id);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public void createUser(UUID uuid, String id) {
         try {
             this.implementation.createUser(uuid, id);

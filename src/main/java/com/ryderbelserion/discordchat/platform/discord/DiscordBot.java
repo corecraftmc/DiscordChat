@@ -8,6 +8,7 @@ import com.ryderbelserion.discordchat.platform.discord.api.commands.CommandHandl
 import com.ryderbelserion.discordchat.platform.discord.api.embeds.Embed;
 import com.ryderbelserion.discordchat.platform.discord.api.listeners.ModuleListener;
 import com.ryderbelserion.discordchat.platform.discord.commands.DiscordLinkCommand;
+import com.ryderbelserion.discordchat.platform.discord.commands.DiscordUnLinkCommand;
 import com.ryderbelserion.discordchat.platform.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
@@ -111,12 +112,12 @@ public class DiscordBot extends AbstractPlugin {
         this.handler.setGuild(guild);
 
         List.of(
-                new DiscordLinkCommand()
-        ).forEach(command -> {
-            this.handler.addGuildCommand(command, OptionType.STRING, "code", "Returns the code if found.");
+                new DiscordLinkCommand(),
+                new DiscordUnLinkCommand()
+        ).forEach(this::register);
 
-            register(command);
-        });
+        this.handler.addGuildCommand(new DiscordLinkCommand(), OptionType.STRING, "code", "Links your account to your minecraft account.");
+        this.handler.addGuildCommand(new DiscordUnLinkCommand());
 
         sendDiscordMessage(
                 Messages.server_started.getDiscordMessage(),

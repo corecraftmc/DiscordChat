@@ -27,6 +27,14 @@ public class SqlStorage implements StorageImplementation {
 
     private static final String player_select = "SELECT uuid FROM '{prefix}users' WHERE uuid=? LIMIT 1";
 
+    private static final String player_select_id = "SELECT id from '{prefix}users' WHERE uuid=? LIMIT 1";
+
+    private static final String player_select_uuid = "SELECT uuid from '{prefix}users' WHERE id=? LIMIT 1";
+
+    private static final String player_update = "UPDATE '{prefix}users' SET id=? WHERE uuid=?";
+
+    private static final String player_update_id = "UPDATE '{prefix}users' SET uuid=? WHERE id=?";
+
     private final ConnectionFactory factory;
     private final Function<String, String> processor;
 
@@ -100,16 +108,41 @@ public class SqlStorage implements StorageImplementation {
         }
     }
 
-    private boolean tableExists(Connection connection, String table) throws SQLException {
-        try (ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
-            while (resultSet.next()) {
-                if (resultSet.getString(3).equalsIgnoreCase(table)) {
-                    return true;
-                }
+    @Override
+    public void removeUser(UUID uuid) throws SQLException {
+        try (Connection connection = this.factory.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_update))) {
+                statement.setString(1, null);
+                statement.setString(2, uuid.toString());
+                statement.execute();
             }
         }
+    }
 
-        return false;
+    @Override
+    public void removeUser(String id) throws SQLException {
+        try (Connection connection = this.factory.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_update_id))) {
+                statement.setString(1, "");
+                statement.setString(2, id);
+                statement.execute();
+            }
+        }
+    }
+
+    @Override
+    public String getIdentifier(String id) throws SQLException {
+        try (PreparedStatement statement = this.factory.getConnection().prepareStatement(this.processor.apply(player_select_uuid))) {
+            statement.setString(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("uuid");
+                }
+
+                return null;
+            }
+        }
     }
 
     @Override
@@ -125,5 +158,17 @@ public class SqlStorage implements StorageImplementation {
                 return null;
             }
         }
+    }
+
+    private boolean tableExists(Connection connection, String table) throws SQLException {
+        try (ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
+            while (resultSet.next()) {
+                if (resultSet.getString(3).equalsIgnoreCase(table)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
