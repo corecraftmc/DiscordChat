@@ -4,8 +4,10 @@ import com.ryderbelserion.discordchat.listeners.PlayerChatEvent;
 import com.ryderbelserion.discordchat.listeners.PlayerDamageEvent;
 import com.ryderbelserion.discordchat.listeners.PlayerTrafficEvent;
 import com.ryderbelserion.discordchat.platform.discord.api.AbstractPlugin;
+import com.ryderbelserion.discordchat.platform.discord.api.commands.CommandHandler;
 import com.ryderbelserion.discordchat.platform.discord.api.embeds.Embed;
 import com.ryderbelserion.discordchat.platform.discord.api.listeners.ModuleListener;
+import com.ryderbelserion.discordchat.platform.discord.commands.DiscordLinkCommand;
 import com.ryderbelserion.discordchat.platform.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.discordchat.platform.impl.Config;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
@@ -17,6 +19,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -38,6 +41,7 @@ public class DiscordBot extends AbstractPlugin {
 
     private JDA jda = null;
     private Guild guild = null;
+    private CommandHandler handler = null;
 
     @Override
     public void start() {
@@ -56,6 +60,9 @@ public class DiscordBot extends AbstractPlugin {
         }
 
         this.jda = JDABuilder.createDefault(token).enableIntents(this.intents).enableCache(this.flags).addEventListeners(new ModuleListener(this)).build();
+
+        this.handler = new CommandHandler();
+        this.handler.setJDA(this.jda);
 
         register(new DiscordChatListener());
 
