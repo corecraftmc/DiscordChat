@@ -74,10 +74,17 @@ public class DiscordBot extends AbstractPlugin {
             return;
         }
 
-        //sendDiscordMessage(
-        //        Messages.server_shutdown.getDiscordMessage(),
-        //        this.locale.getProperty(Locale.server_shutdown_color)
-        //);
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> sendDiscordMessage(
+                player,
+                Messages.player_quit_title.getMessage(player, "{username}", player.getName()),
+                null,
+                this.locale.getProperty(Locale.player_quit_color)
+        ));
+
+        sendDiscordMessage(
+                Messages.server_shutdown.getDiscordMessage(),
+                this.locale.getProperty(Locale.server_shutdown_color)
+        );
 
         this.jda.shutdown();
     }
