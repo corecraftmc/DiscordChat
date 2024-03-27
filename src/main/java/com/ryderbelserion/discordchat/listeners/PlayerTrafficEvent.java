@@ -5,6 +5,7 @@ import com.ryderbelserion.discordchat.DiscordChat;
 import com.ryderbelserion.discordchat.platform.ConfigManager;
 import com.ryderbelserion.discordchat.platform.discord.DiscordBot;
 import com.ryderbelserion.discordchat.platform.impl.Locale;
+import com.ryderbelserion.discordchat.platform.impl.cache.CacheManager;
 import com.ryderbelserion.discordchat.platform.impl.enums.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerTrafficEvent implements Listener {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
+
+    private final @NotNull CacheManager cacheManager = this.plugin.getCacheManager();
 
     private final @NotNull SettingsManager locale = ConfigManager.getLocale();
 
@@ -44,5 +47,7 @@ public class PlayerTrafficEvent implements Listener {
                 null,
                 this.locale.getProperty(Locale.player_quit_color)
         );
+
+        this.cacheManager.removeUser(player.getUniqueId());
     }
 }
