@@ -101,10 +101,20 @@ public class DiscordBot extends AbstractPlugin {
             this.config.reload();
         }
 
-        //sendDiscordMessage(
-        //        Messages.server_started.getDiscordMessage(),
-        //        this.locale.getProperty(Locale.server_started_color)
-        //);
+        this.handler.setGuild(guild);
+
+        List.of(
+                new DiscordLinkCommand()
+        ).forEach(command -> {
+            this.handler.addGuildCommand(command, OptionType.STRING, "code", "Returns the code if found.");
+
+            register(command);
+        });
+
+        sendDiscordMessage(
+                Messages.server_started.getDiscordMessage(),
+                this.locale.getProperty(Locale.server_started_color)
+        );
     }
 
     @Override
