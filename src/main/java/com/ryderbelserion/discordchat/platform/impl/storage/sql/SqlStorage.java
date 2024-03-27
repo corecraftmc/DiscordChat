@@ -23,7 +23,7 @@ public class SqlStorage implements StorageImplementation {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private static final String player_insert = "INSERT INTO '{prefix}users' (uuid) VALUES(?)";
+    private static final String player_insert = "INSERT INTO '{prefix}users' (uuid, id) VALUES(?, ?)";
 
     private final ConnectionFactory factory;
     private final Function<String, String> processor;
@@ -88,10 +88,11 @@ public class SqlStorage implements StorageImplementation {
     }
 
     @Override
-    public void createUser(UUID uuid) throws SQLException {
+    public void createUser(UUID uuid, String id) throws SQLException {
         try (Connection connection = this.factory.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_insert))) {
                 statement.setString(1, uuid.toString());
+                statement.setString(2, id);
                 statement.execute();
             }
         }

@@ -43,10 +43,9 @@ public class Storage {
         return getImplementation().getName();
     }
 
-    public void createUser(UUID uuid) {
+    public void createUser(UUID uuid, String id) {
         try {
-            this.implementation.createUser(uuid);
-
+            this.implementation.createUser(uuid, id);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
