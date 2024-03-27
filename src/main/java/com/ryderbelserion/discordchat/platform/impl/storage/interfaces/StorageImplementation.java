@@ -13,4 +13,6 @@ public interface StorageImplementation {
     void stop() throws Exception;
 
     void createUser(UUID uuid, String id) throws SQLException;
+
+    String getPlayer(UUID uuid) throws SQLException;
 }

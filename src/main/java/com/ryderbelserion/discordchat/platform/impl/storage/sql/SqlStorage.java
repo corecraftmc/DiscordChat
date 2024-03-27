@@ -110,7 +110,18 @@ public class SqlStorage implements StorageImplementation {
         return false;
     }
 
-    private void getPlayer(Connection connection) {
+    @Override
+    public String getPlayer(UUID uuid) throws SQLException {
+        try (PreparedStatement statement = this.factory.getConnection().prepareStatement(this.processor.apply(player_select))) {
+            statement.setString(1, uuid.toString());
 
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("uuid");
+                }
+
+                return null;
+            }
+        }
     }
 }
