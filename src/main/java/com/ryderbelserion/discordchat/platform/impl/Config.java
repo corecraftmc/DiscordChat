@@ -13,6 +13,12 @@ public class Config implements SettingsHolder {
     @Comment("The prefix that appears in front of messages.")
     public static final Property<String> command_prefix = newProperty("root.prefix", "<gold>[<red>DiscordChat<gold>]: ");
 
+    @Comment("Send the startup message.")
+    public static final Property<Boolean> send_startup = newProperty("root.startup", false);
+
+    @Comment("Send the shutdown message.")
+    public static final Property<Boolean> send_shutdown = newProperty("root.shutdown", false);
+
     @Comment({
             "The timezone the discord bot should use by default.",
             "All timezones are identified by the TZ identifier.",

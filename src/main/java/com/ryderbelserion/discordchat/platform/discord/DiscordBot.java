@@ -89,10 +89,12 @@ public class DiscordBot extends AbstractPlugin {
                 this.locale.getProperty(Locale.player_quit_color)
         ));
 
-        sendDiscordMessage(
-                Messages.server_shutdown.getDiscordMessage(),
-                this.locale.getProperty(Locale.server_shutdown_color)
-        );
+        if (this.config.getProperty(Config.send_shutdown)) {
+            sendDiscordMessage(
+                    Messages.server_shutdown.getDiscordMessage(),
+                    this.locale.getProperty(Locale.server_shutdown_color)
+            );
+        }
 
         this.jda.shutdown();
     }
@@ -119,10 +121,12 @@ public class DiscordBot extends AbstractPlugin {
         this.handler.addGuildCommand(new DiscordLinkCommand(), OptionType.STRING, "code", "Links your account to your minecraft account.");
         this.handler.addGuildCommand(new DiscordUnLinkCommand());
 
-        sendDiscordMessage(
-                Messages.server_started.getDiscordMessage(),
-                this.locale.getProperty(Locale.server_started_color)
-        );
+        if (this.config.getProperty(Config.send_startup)) {
+            sendDiscordMessage(
+                    Messages.server_started.getDiscordMessage(),
+                    this.locale.getProperty(Locale.server_started_color)
+            );
+        }
     }
 
     @Override
