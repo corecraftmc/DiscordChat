@@ -21,19 +21,36 @@ public class DiscordLinkCommand extends CommandEngine {
     protected void perform(CommandContext context) {
         String option = context.getOption("code").getAsString();
 
+        // Get the code.
         String code = this.cacheManager.getCode(option);
 
+        // If code is null, say it's invalid then return.
         if (code == null) {
             context.reply("The code you entered is invalid!", false);
+
             return;
         }
 
+        // Get uuid by code.
         UUID uuid = this.cacheManager.getIdentifier(code);
 
+        if (this.storage.getUser(uuid) != null) {
+            // Remove the cache.
+            this.cacheManager.removeUser(uuid);
+
+            // Send message.
+            context.reply("The user already is linked, Please use /unlink to start over", false);
+
+            return;
+        }
+
+        // Send successfully linked.
         context.reply("You have successfully linked your discord account to " + this.cacheManager.getIdentifier(code), false);
 
+        // Store user.
         this.storage.createUser(uuid, context.author().getId());
 
+        // Remove from cache.
         this.cacheManager.removeUser(uuid);
     }
 }
