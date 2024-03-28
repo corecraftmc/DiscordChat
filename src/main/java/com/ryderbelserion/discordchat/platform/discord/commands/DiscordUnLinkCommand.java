@@ -15,14 +15,16 @@ public class DiscordUnLinkCommand extends CommandEngine {
 
     @Override
     protected void perform(CommandContext context) {
-        if (this.storage.getId(context.author().getId()) == null) {
+        /*String id = this.storage.getId(context.author().getId());
+
+        if (id == null) {
             context.reply("You are not linked to anyone.", false);
 
             return;
         }
 
-        this.storage.removeUser(context.author().getId());
+        this.storage.removeUser(id);
 
-        context.reply("You have successfully unlinked your discord account.", false);
+        context.reply("You have successfully unlinked your discord account.", false);*/
     }
 }

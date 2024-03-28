@@ -19,7 +19,7 @@ public class DiscordLinkCommand extends CommandEngine {
 
     @Override
     protected void perform(CommandContext context) {
-        String option = context.getOption("code").getAsString();
+        /*String option = context.getOption("code").getAsString();
 
         // Get the code.
         String code = this.cacheManager.getCode(option);
@@ -31,10 +31,12 @@ public class DiscordLinkCommand extends CommandEngine {
             return;
         }
 
+        String id = context.author().getId();
+
         // Get uuid by code.
         UUID uuid = this.cacheManager.getIdentifier(code);
 
-        if (this.storage.getUser(uuid) != null) {
+        if (this.storage.getUser(id) != null) {
             // Remove the cache.
             this.cacheManager.removeUser(uuid);
 
@@ -45,12 +47,12 @@ public class DiscordLinkCommand extends CommandEngine {
         }
 
         // Send successfully linked.
-        context.reply("You have successfully linked your discord account to " + this.cacheManager.getIdentifier(code), false);
+        context.reply("You have successfully linked your discord account to " + uuid, false);
 
         // Store user.
         this.storage.createUser(uuid, context.author().getId());
 
         // Remove from cache.
-        this.cacheManager.removeUser(uuid);
+        this.cacheManager.removeUser(uuid);*/
     }
 }

@@ -3,9 +3,10 @@ CREATE TABLE `{prefix}players` (
   PRIMARY KEY (`uuid`)
 );
 
-CREATE TABLE `{prefix}users` (
-  `id` VARCHAR(18),
-   PRIMARY KEY (`id`),
-   CONSTRAINT FK_UUID FOREIGN KEY (id)
+CREATE TABLE `{prefix}links` (
+  `player_id` VARCHAR(36) NOT NULL,
+  `long` VARCHAR(18),
+   PRIMARY KEY (`player_id`, `long`),
+   CONSTRAINT FK_UUID FOREIGN KEY (player_id)
    REFERENCES `{prefix}players` (`uuid`)
 );

@@ -13,6 +13,8 @@ public class Storage {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
+    private final static String discord_get_id = "";
+
     private final StorageImplementation implementation;
 
     public Storage(StorageImplementation implementation) {
@@ -41,49 +43,5 @@ public class Storage {
 
     public String getName() {
         return getImplementation().getName();
-    }
-
-    public String getUser(UUID uuid) {
-        try {
-            return this.implementation.getPlayer(uuid);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-
-            return null;
-        }
-    }
-
-    public String getId(String id) {
-        try {
-            return this.implementation.getIdentifier(id);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-
-            return null;
-        }
-    }
-
-    public void removeUser(UUID uuid) {
-        try {
-            this.implementation.removeUser(uuid);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public void removeUser(String id) {
-        try {
-            this.implementation.removeUser(id);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public void createUser(UUID uuid, String id) {
-        try {
-            this.implementation.createUser(uuid, id);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
     }
 }

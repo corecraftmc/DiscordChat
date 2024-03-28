@@ -35,4 +35,10 @@ public class LinkCommand extends BaseCommand {
 
         player.sendMessage("This is your code: " + code);
     }
+
+    @Command("status")
+    @Permission(value = "discordchat.status", def = PermissionDefault.OP)
+    public void status(Player player) {
+        UUID uuid = player.getUniqueId();
+    }
 }

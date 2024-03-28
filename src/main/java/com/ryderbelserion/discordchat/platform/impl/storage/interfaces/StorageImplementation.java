@@ -12,13 +12,13 @@ public interface StorageImplementation {
 
     void stop() throws Exception;
 
-    void createUser(UUID uuid, String id) throws SQLException;
+    //void createUser(UUID uuid, String id) throws SQLException;
 
-    void removeUser(UUID uuid) throws SQLException;
+    //void removeUser(UUID uuid) throws SQLException;
 
-    void removeUser(String id) throws SQLException;
+    //void removeUser(String id) throws SQLException;
 
-    String getIdentifier(String id) throws SQLException;
+    //String getIdentifier(String id) throws SQLException;
 
-    String getPlayer(UUID uuid) throws SQLException;
+    //String getPlayer(UUID uuid) throws SQLException;
 }

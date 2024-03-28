@@ -10,32 +10,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.function.Function;
 
 public class SqlStorage implements StorageImplementation {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
-
-    private static final String player_select = "SELECT uuid FROM '{prefix}players' WHERE uuid=?";
-
-    private static final String player_select_uuid = "SELECT uuid from '{prefix}players' WHERE id=? LIMIT 1";
-
-    private static final String player_update = "UPDATE '{prefix}players' SET id=? WHERE uuid=? OR id=?";
-
-    private static final String minecraft_player_insert = "INSERT INTO '{prefix}players' (uuid) VALUES(?)";
-
-    private static final String discord_link_insert = "INSERT INTO '{prefix}links' (player_id, long) VALUES(?, ?)";
-
-    private static final String discord_link_update = "UPDATE '{prefix}links' SET long=? WHERE long=?";
-
-    private static final String discord_link_select = "SELECT long FROM '{prefix}links' WHERE long=?";
 
     private final ConnectionFactory factory;
     private final Function<String, String> processor;
@@ -58,7 +42,7 @@ public class SqlStorage implements StorageImplementation {
         boolean tableExists;
 
         try (Connection connection = this.factory.getConnection()) {
-            tableExists = tableExists(connection, this.processor.apply("{prefix}users"));
+            tableExists = tableExists(connection, this.processor.apply("{prefix}players"));
         }
 
         if (!tableExists) {
@@ -99,10 +83,15 @@ public class SqlStorage implements StorageImplementation {
         this.factory.stop();
     }
 
-    @Override
+    /*@Override
     public void createUser(UUID uuid, String id) throws SQLException {
         try (Connection connection = this.factory.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_insert))) {
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(minecraft_player_insert))) {
+                statement.setString(1, uuid.toString());
+                statement.execute();
+            }
+
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(discord_link_insert))) {
                 statement.setString(1, uuid.toString());
                 statement.setString(2, id);
                 statement.execute();
@@ -124,8 +113,8 @@ public class SqlStorage implements StorageImplementation {
     @Override
     public void removeUser(String id) throws SQLException {
         try (Connection connection = this.factory.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(player_update_id))) {
-                statement.setString(1, "");
+            try (PreparedStatement statement = connection.prepareStatement(this.processor.apply(discord_link_update))) {
+                statement.setString(1, null);
                 statement.setString(2, id);
                 statement.execute();
             }
@@ -134,15 +123,11 @@ public class SqlStorage implements StorageImplementation {
 
     @Override
     public String getIdentifier(String id) throws SQLException {
-        try (PreparedStatement statement = this.factory.getConnection().prepareStatement(this.processor.apply(player_select_uuid))) {
+        try (PreparedStatement statement = this.factory.getConnection().prepareStatement(this.processor.apply(discord_link_select))) {
             statement.setString(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getString("uuid");
-                }
-
-                return null;
+                return resultSet.getString("long");
             }
         }
     }
@@ -160,7 +145,7 @@ public class SqlStorage implements StorageImplementation {
                 return null;
             }
         }
-    }
+    }*/
 
     private boolean tableExists(Connection connection, String table) throws SQLException {
         try (ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
