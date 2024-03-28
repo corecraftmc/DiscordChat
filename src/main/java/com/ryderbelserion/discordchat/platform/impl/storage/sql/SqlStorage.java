@@ -23,17 +23,19 @@ public class SqlStorage implements StorageImplementation {
 
     private final @NotNull DiscordChat plugin = JavaPlugin.getPlugin(DiscordChat.class);
 
-    private static final String player_insert = "INSERT INTO '{prefix}users' (uuid, id) VALUES(?, ?)";
+    private static final String player_select = "SELECT uuid FROM '{prefix}players' WHERE uuid=?";
 
-    private static final String player_select = "SELECT uuid FROM '{prefix}users' WHERE uuid=? LIMIT 1";
+    private static final String player_select_uuid = "SELECT uuid from '{prefix}players' WHERE id=? LIMIT 1";
 
-    private static final String player_select_id = "SELECT id from '{prefix}users' WHERE uuid=? LIMIT 1";
+    private static final String player_update = "UPDATE '{prefix}players' SET id=? WHERE uuid=? OR id=?";
 
-    private static final String player_select_uuid = "SELECT uuid from '{prefix}users' WHERE id=? LIMIT 1";
+    private static final String minecraft_player_insert = "INSERT INTO '{prefix}players' (uuid) VALUES(?)";
 
-    private static final String player_update = "UPDATE '{prefix}users' SET id=? WHERE uuid=?";
+    private static final String discord_link_insert = "INSERT INTO '{prefix}links' (player_id, long) VALUES(?, ?)";
 
-    private static final String player_update_id = "UPDATE '{prefix}users' SET uuid=? WHERE id=?";
+    private static final String discord_link_update = "UPDATE '{prefix}links' SET long=? WHERE long=?";
+
+    private static final String discord_link_select = "SELECT long FROM '{prefix}links' WHERE long=?";
 
     private final ConnectionFactory factory;
     private final Function<String, String> processor;
