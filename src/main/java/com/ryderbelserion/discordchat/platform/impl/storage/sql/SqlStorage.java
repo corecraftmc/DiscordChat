@@ -148,7 +148,8 @@ public class SqlStorage implements StorageImplementation {
     }*/
 
     private boolean tableExists(Connection connection, String table) throws SQLException {
-        try (ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
+        try (ResultSet resultSet = connection.
+                getMetaData().getTables(connection.getCatalog(), null, "%", null)) {
             while (resultSet.next()) {
                 if (resultSet.getString(3).equalsIgnoreCase(table)) {
                     return true;

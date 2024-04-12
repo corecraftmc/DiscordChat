@@ -3,8 +3,12 @@ package com.ryderbelserion.discordchat.platform.impl;
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.properties.Property;
+import com.ryderbelserion.discordchat.platform.impl.storage.StorageType;
+
 import java.util.Collections;
 import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
@@ -18,6 +22,8 @@ public class Config implements SettingsHolder {
 
     @Comment("Send the shutdown message.")
     public static final Property<Boolean> send_shutdown = newProperty("root.shutdown", false);
+
+    public static final Property<StorageType> storage_type = newBeanProperty(StorageType.class, "root.storage-type", StorageType.sqlite);
 
     @Comment({
             "The timezone the discord bot should use by default.",
